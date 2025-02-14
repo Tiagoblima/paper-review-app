@@ -8,3 +8,6 @@ langserve>=0.3,<0.4
 langchain-huggingface>=0.1,<0.2
 langchain-pinecone>=0.2,<0.3
 langchain-unstructured>=0.1.4,<0.2
+bs4
+langchain-groq>=0.2,<0.3
+pypdf
