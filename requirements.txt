@@ -11,3 +11,5 @@ langchain-unstructured>=0.1.4,<0.2
 bs4
 langchain-groq>=0.2,<0.3
 pypdf
+openpyxl
+pandas
