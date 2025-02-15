@@ -1,0 +1,5 @@
+{
+"backbone_prompt": " You are my research assistent and I need you to help me extract certain information according to some research question.  {context} Question: {question}",
+"few_shot_prompt": " Example: Question: What are the techniques used to apply bloom taxonomy? <answer> The techniques used to apply bloom taxonomy are: </answer> <supporting_text> Supporting text: </supporting_text>",
+"response_prompt": "RETURN the answer and the supporting text in the following format: <answer> answer </answer> <supporting_text> supporting_text </supporting_text>  RETURN the answer in a structured format only with the information requested. Also, you need to provide within quotes the piece of text in the paper that supports the answer."
+}       

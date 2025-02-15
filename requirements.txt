@@ -13,3 +13,4 @@ langchain-groq>=0.2,<0.3
 pypdf
 openpyxl
 pandas
+unstructured[pdf]
