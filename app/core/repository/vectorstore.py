@@ -7,7 +7,7 @@ from app.core.repository.models import EmbeddingsModelRepository
 
 class VectorStoreRepository:
     def __init__(self, embeddings_model: EmbeddingsModelRepository):
-        self.vector_store = InMemoryVectorStore(embeddings=embeddings_model.get_model())
+        self.vector_store = InMemoryVectorStore(embedding=embeddings_model.get_model())
 
     def add_documents(self, documents: list[Document]):
         self.vector_store.add_documents(documents)

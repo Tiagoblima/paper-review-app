@@ -6,6 +6,14 @@ from langchain_huggingface import HuggingFaceEmbeddings
 class ModelProvider(Enum):
     GROQ = "groq"
     OPENAI = "openai"
+class EmbeddingsModelProvider(Enum):
+    HUGGINGFACE = "huggingface"
+    OPENAI = "openai"
+class EmbeddingModel(Enum):
+    BAAI_EMBEDDING = "BAAI/bge-base-en-v1.5"
+    OPENAI_EMBEDDING = "text-embedding-3-small" 
+    SENTENCE_TRANSFORMER = "sentence-transformers/all-mpnet-base-v2"
+
 
 class BaseModelRepository:
     def __init__(self):
@@ -16,10 +24,11 @@ class BaseModelRepository:
 
 class ChatModelRepository(BaseModelRepository):
     def __init__(self, model_name: str, api_key: str, provider: str):
+       
         self.chat_model = init_chat_model(
             model=model_name,
             api_key=api_key,
-            provider=provider
+            model_provider=provider
         )
 
     def get_model(self):

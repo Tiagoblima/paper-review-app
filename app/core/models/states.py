@@ -6,3 +6,4 @@ class State(TypedDict):
     question: str
     context: List[Document]
     answer: str
+    supporting_text: str
