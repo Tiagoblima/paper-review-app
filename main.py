@@ -1,8 +1,10 @@
+from pprint import pprint
+import pandas as pd
 from typing_extensions import Annotated
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import HTMLResponse
-from app.agents.review_agent import PaperReviewAgent
 from app.core.services.review_service import ReviewService
+from app.utils.utils import save_df_to_excel
 DEFAUTL_SAVE_PATH = "app/resources/uploads"
 app = FastAPI()
 research_questions = ["What are the techniques used to apply bloom taxonomy?",
@@ -11,7 +13,9 @@ research_questions = ["What are the techniques used to apply bloom taxonomy?",
                       "What are the target disciplines and audiance?",
                       " What is the datasets used?",
                       "What are the qualitative and quantitative impirical evidences?",
-                      " What are the current challenges when applying LLMs to build Bloom Taxonomy aligned questions?"]
+                      "What are the current challenges when applying LLMs to build Bloom Taxonomy aligned questions?"]
+
+basic_info_keys = ["title", "authors", "year", "abstract", "keywords", "doi", "country", "conference"]
 
 @app.get("/")
 async def root():
@@ -26,17 +30,28 @@ async def create_files(files: Annotated[list[bytes], File()]):
 async def create_upload_files(files: list[UploadFile]):
 
     results = []
-    for file in files:
+    basic_info_list = []
+    for paper_id, file in enumerate(files, 1):
         contents = await file.read()
         with open(f"{DEFAUTL_SAVE_PATH}/{file.filename}", "wb") as f:
             f.write(contents)
 
-        review_service = ReviewService(f"{DEFAUTL_SAVE_PATH}/{file.filename}")
+        review_service = ReviewService(f"{DEFAUTL_SAVE_PATH}/{file.filename}", basic_info_keys)
+        basic_info = review_service.get_basic_info()
+        basic_info["source"] = file.filename
+        
+        filtered_basic_info = {key: basic_info[key] for key in basic_info_keys if key in basic_info}
+        filtered_basic_info["ID"] = paper_id
+        save_df_to_excel(pd.DataFrame.from_dict(filtered_basic_info, orient="index").T,
+                          "Basic Info", f"{DEFAUTL_SAVE_PATH}/results.xlsx")
+        basic_info_list.append(filtered_basic_info)
         for i, question in enumerate(research_questions):
             result = review_service.invoke(question)
             result["context"] = [doc.page_content for doc in result["context"]]
             result["source"] = file.filename
             results.append(result)
+            #save_df_to_excel(result, f"RQ{i+1}", f"{DEFAUTL_SAVE_PATH}/results.xlsx")
+        
     return results
 
 
