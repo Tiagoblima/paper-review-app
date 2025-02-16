@@ -175,3 +175,9 @@ cython_debug/
 
 # Examples 
 notebooks/example
+app/resources/uploads/*
+app/resources/uploads/.DS_Store
+*.xlsx
+*.pdf
+*.ipynb_checkpoints
+*.ipynb
