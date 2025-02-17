@@ -1,4 +1,4 @@
-from pprint import pprint
+from dotenv import load_dotenv
 import pandas as pd
 from typing_extensions import Annotated
 from fastapi import FastAPI, File, UploadFile
@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from app.core.services.review_service import ReviewService
 from app.utils.utils import save_df_to_excel
 DEFAUTL_SAVE_PATH = "app/resources/uploads"
+load_dotenv()
 app = FastAPI()
 research_questions = ["What are the techniques used to apply bloom taxonomy?",
                       "What are objectives of applying bloom taxonomy?",

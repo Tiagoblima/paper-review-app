@@ -20,8 +20,9 @@ basic_info_questions = ["What is the title of the paper?",
 class ReviewService:
     def __init__(self, paper_path: str, basic_info_keys: list[str]):
         
-        vector_store = VectorStoreRepository(EmbeddingsModelRepository(EmbeddingModel.SENTENCE_TRANSFORMER))
-        vectorstore_service = ProcessingService(vector_store, paper_path).get_vectorstore_service()
+        embedding_model = EmbeddingsModelRepository(EmbeddingModel.SENTENCE_TRANSFORMER)
+        vector_store = VectorStoreRepository(embedding_model)
+        vectorstore_service = ProcessingService(vector_store, embedding_model, paper_path).get_vectorstore_service()
         
 
         chat_service = ChatModelService(model_repository=ChatModelRepository(model_name=os.getenv("CHAT_MODEL"),
